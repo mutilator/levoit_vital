@@ -1,6 +1,6 @@
 # Levoit Vital Esphome component
 
-Esphome component for the Levoit Vital 200S and 200S pro, maybe also works for 100S.
+Esphome component for the Levoit Vital **200S** and **200S pro**, maybe also works for **100S**.
 
 As there was no component or firmware or anything for the Levoit Vital 200S i reverse engineered most of the protocol and made a esphome componend to use.
 - This should also work with the Levoit Vital 200S Pro, as (i asked the manufacturer) the pro version is the exact same device but in another color.
@@ -53,7 +53,7 @@ I Used an older USB to Serial Adapter and could not backup with full Speed. If o
 
 
  After Dumping you can upload the firmware. Currently i do not provide a binary file for you, but yout can build and upload the component with esphome. 
- - The only thing you must configure in the yaml file is are the firts 3 ids (or maybe leave it the way they are) and your wifi/ap data.
+ - The only thing you must configure in the yaml file are the firts 3 ids (or maybe leave it the way they are) and your wifi/ap data.
 
 
 

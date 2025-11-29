@@ -1,0 +1,179 @@
+# if you have more than one air purifier, it is best to rename all 3 entries:
+# esphome->name
+# api->id
+# levoitvital->id
+
+esphome:
+  name: "levoitvital1"
+  # only use long names if you really are sure, as this will extend the name of all entities for this device in homeassistant (e.g. Levoit air purifier Vital200S(P) - Fan level).
+  friendly_name: " " #Levoit air purifier Vital200S(P)
+
+
+api:
+  id: vital1 
+ota:
+  platform: esphome
+  #password: !secret ota_password
+
+levoitvital:
+  id: levoitvital1
+  model: "VITAL200S"
+
+
+#config for the vital200S(and also the pro variant) (esp32-c3-solo-1), maybe this also works for the S100 but i do not have this device so i could not test (dieassemble it) yet.
+esp32:
+  board: esp32-c3-devkitm-1
+  variant: esp32c3
+  flash_size: 4MB
+  cpu_frequency: 160Mhz
+  framework:
+    type: esp-idf
+    sdkconfig_options:
+      CONFIG_FREERTOS_UNICORE: y
+
+#this is for esp32-s3-wroom-1 that i used for debugging.
+#If you intend to use this board, feel fre to use this configuration.. or just delete it :).
+# platformio_options:
+#     build_flags: "-DBOARD_HAS_PSRAM"
+#     board_build.flash_mode: qio #dio
+# esp32:
+#   board: esp32-s3-devkitc-1
+#   variant: esp32s3
+#   flash_size: 8MB
+#   framework:
+#     type: esp-idf
+#     version: recommended
+#     sdkconfig_options:
+#         CONFIG_ESP32S3_DEFAULT_CPU_FREQ_240: "y"
+#         CONFIG_ESP32S3_DATA_CACHE_64KB: "y"
+#         CONFIG_ESP32S3_DATA_CACHE_LINE_64B: "y"
+#         CONFIG_ESP32S3_INSTRUCTION_CACHE_32KB: "y"
+#         CONFIG_AUDIO_BOARD_CUSTOM: "y"
+#         CONFIG_BT_ALLOCATION_FROM_SPIRAM_FIRST: "y"
+#         CONFIG_BT_BLE_DYNAMIC_ENV_MEMORY: "y"
+#         CONFIG_MBEDTLS_EXTERNAL_MEM_ALLOC: "y"
+#         CONFIG_MBEDTLS_SSL_PROTO_TLS1_3: "y" # TLS1.3 support isn't enabled by default in IDF 5.1.5
+
+#         COMPILER_OPTIMIZATION_SIZE: "y"
+
+#         CONFIG_ESP32_WIFI_STATIC_RX_BUFFER_NUM: "16"
+#         CONFIG_ESP32_WIFI_DYNAMIC_RX_BUFFER_NUM: "512"
+#         CONFIG_TCPIP_RECVMBOX_SIZE: "512"
+#         CONFIG_TCP_SND_BUF_DEFAULT: "65535"
+#         CONFIG_TCP_WND_DEFAULT: "512000"
+#         CONFIG_TCP_RECVMBOX_SIZE: "512"
+
+# psram:
+#   mode: quad  # quad for N8R2 and octal for N16R8
+#   speed: 80MHz
+
+
+#use this for use with git
+external_components:
+  - source: github://targor/levoit_vital
+    components: [levoitvital]
+
+# use this for local development
+#external_components:
+#   - source: "./components/"
+#     components: [levoitvital]
+
+logger:
+  level: DEBUG
+  baud_rate: 115200
+  hardware_uart: UART0
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+  fast_connect: true
+  power_save_mode: none
+
+  ap:
+    ssid: "Levoit-Vital AP"
+    password: !secret ap_password
+
+captive_portal:
+
+
+#for vital200s (esp32-c3-solo-1)
+uart:
+  tx_pin: GPIO19 
+  rx_pin: GPIO18
+  baud_rate: 115200
+
+# for esp32-s3-wroom-1
+# uart:
+#   tx_pin: GPIO17 
+#   rx_pin: GPIO18
+#   baud_rate: 115200
+
+
+# please only reconfigre this if you know what you are doing and maybe want to alter the source code.
+#https://www.home-assistant.io/integrations/sensor#device-class
+sensor:
+  - platform: levoitvital
+    particle_density:
+      name: "Particle density"
+      device_class: "pm25"
+      state_class: measurement
+      unit_of_measurement: "µg/m³"
+  - platform: levoitvital
+    airquality_score:
+      name: "Air quality score"
+      device_class: "aqi"
+      state_class: measurement
+      unit_of_measurement: "AQI"
+
+text_sensor:
+  - platform: levoitvital
+    airquality_level:
+      name: "Airquality"
+    display_state:
+      name: "display state"
+      
+
+number:
+  - platform: levoitvital
+    efficient_num: 
+      name: "Efficient mode value"
+
+switch:
+  - platform: levoitvital
+    device_power:
+      name: "Power"
+    light_detect:
+      name: "Light detection"
+    display_lock:
+      name: "Display lock"
+    display:
+      name: "Display"
+
+select:
+  - platform: levoitvital
+    automode:
+      name: "Automode"
+      optimistic: true
+      options:
+        - "Default"
+        - "Quiet"
+        - "Efficient"
+  - platform: levoitvital
+    fanlevel:
+      name: "FanLevel"
+      optimistic: true
+      options:
+        - "1"
+        - "2"
+        - "3"
+        - "4"
+        - "NOT SET"
+  - platform: levoitvital
+    fanmode:
+      name: "FanMode"
+      optimistic: true
+      options:
+        - "Manual"
+        - "Sleep"
+        - "Automatic"
+        - "Pet"
