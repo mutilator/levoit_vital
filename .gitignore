@@ -5,3 +5,4 @@
 /secrets.yaml
 /.continue
 /.vscode
+**/__pycache__
