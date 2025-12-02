@@ -5,7 +5,12 @@ esphome:
   name_add_mac_suffix: true # using this, there is no need to set a new name for every new device. id is automatically used in combination with devices mac.
   # only use long names if you really are sure, as this will extend the name of all entities for this device in homeassistant (e.g. Levoit air purifier Vital200S(P) - Fan level).
   friendly_name: " " #Levoit air purifier Vital200S(P)
-
+  
+  # If the device does not boot maybe enabling these params will work on some devices.
+  #platformio_options:
+  #  board_build.flash_mode: dio
+  #  board_build.flash_freq: 40m
+  
 api:
   id: vital
 ota:
