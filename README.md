@@ -64,7 +64,7 @@ If you want you can add this template to your home assitant to enable the fan po
 Thanks to Scags104 for the suggestion.
 
 ids and names should be modified accordingly.
-
+```
 - fan:
   - unique_id: brap22_fan 
     name: "BRAP22 Fan"
@@ -127,3 +127,4 @@ ids and names should be modified accordingly.
           entity_id: select.brap22_fanmode
         data:
           option: "{{ preset_mode }}"
+```
