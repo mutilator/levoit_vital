@@ -5,6 +5,7 @@ Esphome component for the Levoit Vital **200S**, **200S pro** and **100S**.
 As there was no component or firmware or anything for the Levoit Vital 200S i reverse engineered most of the protocol and made a esphome componend to use.
 - This should also work with the Levoit Vital 200S Pro, as (i asked the manufacturer) the pro version is the exact same device but in another color.
 - If you want to go deeper, i provided my current reverse engineering data ([command table.xlsx](https://github.com/user-attachments/files/23830099/command.table.xlsx)).
+- **Protocol Documentation**: See [PROTOCOL.md](PROTOCOL.md) for complete UART protocol specification, including message structure, command reference, status field mappings, and checksum calculation.
 
 
 # How to?
