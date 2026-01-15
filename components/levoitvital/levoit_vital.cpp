@@ -10,6 +10,7 @@
 #include "number/levoit_vital_number.h"
 #include "button/levoit_vital_button.h"
 #include "text_sensor/levoit_vital_text_sensor.h"
+#include "fan/levoit_vital_fan.h"
 #include "esphome/components/sensor/sensor.h"
 #include "esphome/components/text_sensor/text_sensor.h"
 #include "settings.h"
@@ -68,17 +69,17 @@ namespace esphome
                 this->select_automode = select;
                 break;
             }
-            case FANLEVEL:
-            {
-                this->select_fanlevel = select;
-                break;
-            }
             case FANMODE:
             {
                 this->select_fanmode = select;
                 break;
             }
             }
+        }
+
+        void LevoitVital::set_fan(LevoitFan *fan)
+        {
+            this->fan_level = fan;
         }
 
         void LevoitVital::set_sensor(LevoitSensor *sensor, LevoitSensorPurpose purpose)
@@ -333,34 +334,45 @@ namespace esphome
                         }
                     }
 
-                    if (this->select_fanlevel && checkValChanged(settings.fanLevel, "fanLevel", msg[26]))
+                    if (this->fan_level && checkValChanged(settings.fanLevel, "fanLevel", msg[26]))
                     {
                         switch (settings.fanLevel)
                         {
                         case 0:
                         case 255:
                         {
-                            this->select_fanlevel->publish_state("NOT SET");
+                            // Fan off or not set
+                            this->fan_level->state = false;
+                            this->fan_level->speed = 0;
+                            this->fan_level->publish_state();
                             break;
                         }
                         case 1:
                         {
-                            this->select_fanlevel->publish_state("1");
+                            this->fan_level->state = true;
+                            this->fan_level->speed = 1;
+                            this->fan_level->publish_state();
                             break;
                         }
                         case 2:
                         {
-                            this->select_fanlevel->publish_state("2");
+                            this->fan_level->state = true;
+                            this->fan_level->speed = 2;
+                            this->fan_level->publish_state();
                             break;
                         }
                         case 3:
                         {
-                            this->select_fanlevel->publish_state("3");
+                            this->fan_level->state = true;
+                            this->fan_level->speed = 3;
+                            this->fan_level->publish_state();
                             break;
                         }
                         case 4:
                         {
-                            this->select_fanlevel->publish_state("4");
+                            this->fan_level->state = true;
+                            this->fan_level->speed = 4;
+                            this->fan_level->publish_state();
                             break;
                         }
                         }

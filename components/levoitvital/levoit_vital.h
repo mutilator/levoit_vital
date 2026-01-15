@@ -16,7 +16,8 @@ namespace esphome
         class LevoitSensor;     // forward declaration to prevent errors when including sensor
         class LevoitTextSensor; // forward declaration to prevent errors when including textsensor
         class LevoitNumber;     // forward declaration to prevent errors when including number
-        class LevoitButton;  
+        class LevoitButton;
+        class LevoitFan;        // forward declaration to prevent errors when including fan  
 
         enum ModelType
         {
@@ -42,6 +43,7 @@ namespace esphome
             void set_text_sensor(LevoitTextSensor *sensor, LevoitTextSensorPurpose purpose);
             void set_number(LevoitNumber *number, LevoitNumberPurpose purpose);
             void set_button(LevoitButton *button, LevoitButtonPurpose purpose);
+            void set_fan(LevoitFan *fan);
             void sendCommand(CommandType commandType);
 
             // switches
@@ -52,8 +54,10 @@ namespace esphome
 
             // select controls
             LevoitSelect *select_automode;
-            LevoitSelect *select_fanlevel;
             LevoitSelect *select_fanmode;
+
+            // fan
+            LevoitFan *fan_level;
 
             // number sensors
             LevoitSensor *particle_density;

@@ -68,9 +68,9 @@ esp32:
 #   mode: quad  # quad for N8R2 and octal for N16R8
 #   speed: 80MHz
 
-#use this for use with git
+# use this for use with git
 external_components:
-  - source: github://targor/levoit_vital
+  - source: github://mutilator/levoit_vital
     refresh: 0d # optional
     components: [levoitvital]
 
@@ -179,6 +179,11 @@ button:
     powermode:
       name: "Powermode"
 
+fan:
+  - platform: levoitvital
+    id: levoit_fan
+    name: "Fan"
+
 select:
   - platform: levoitvital
     automode:
@@ -188,16 +193,6 @@ select:
         - "Default"
         - "Quiet"
         - "Efficient"
-  - platform: levoitvital
-    fanlevel:
-      name: "FanLevel"
-      optimistic: true
-      options:
-        - "1"
-        - "2"
-        - "3"
-        - "4"
-        - "NOT SET"
   - platform: levoitvital
     fanmode:
       name: "FanMode"

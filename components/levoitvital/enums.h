@@ -16,7 +16,6 @@ namespace esphome
         enum LevoitSelectPurpose : uint8_t
         {
             AUTOMODE,
-            FANLEVEL,
             FANMODE
         };
 
