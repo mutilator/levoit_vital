@@ -40,8 +40,7 @@ namespace esphome
                 // Fan turned off - speed 0
                 this->speed = 0;
                 ESP_LOGI(TAG, "Fan turned OFF (speed 0)");
-                // TODO: Implement OFF command when available
-                // parent_->sendCommand(setDeviceOFF);
+                parent_->sendCommand(setDeviceOFF);
             }
         }
 
@@ -58,8 +57,7 @@ namespace esphome
             case 0:
                 // Speed 0 = OFF
                 ESP_LOGI(TAG, "Fan speed 0 - turning OFF");
-                // TODO: Implement OFF command when available
-                // parent_->sendCommand(setDeviceOFF);
+                parent_->sendCommand(setDeviceOFF);
                 break;
             case 1:
                 parent_->sendCommand(setDeviceFanLvl1);
