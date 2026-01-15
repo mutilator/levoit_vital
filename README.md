@@ -55,3 +55,10 @@ I Used an older USB to Serial Adapter and could not backup with full Speed. If o
  After Dumping you can upload the firmware. Currently i do not provide a binary file for you, but yout can build and upload the component with esphome. 
  - The only thing you must configure in the yaml file are the firts 3 ids (or maybe leave it the way they are) and your wifi/ap data.
 
+## Screenshots
+
+### Controls
+![Controls](images/controls.png)
+
+### Sensors
+![Sensors](images/sensors.png)

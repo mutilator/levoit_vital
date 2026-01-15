@@ -70,37 +70,93 @@ Status messages are sent automatically about 350ms after a command and then ever
 | 7 | Fixed | `0x00` |
 | 8 | Fixed | `0x55` |
 | 9 | Fixed | `0x00` |
-| 10-113 | Status Data | TLV-encoded status fields (see table below) |
+| 10-113 | Status Data | TLV-encoded status fields (see below) |
+
+**TLV Encoding Structure:**
+
+The status data (bytes 10-113) uses Tag-Length-Value encoding. Bytes 0-9 are the message header.
+
+```
+Format: [Tag] [Length] [Value bytes...]
+
+TLV payload starts at byte 10:
+
+Byte 10-12:  00 01 02          Tag 0x00, Length=1, Value=[0x02]
+Byte 13-17:  01 03 02 00 02    Tag 0x01, Length=3, Value=[0x02, 0x00, 0x02]
+Byte 18-20:  02 01 01          Tag 0x02, Length=1, Value=[0x01]
+Byte 21-23:  03 01 02          Tag 0x03 (Fan Mode), Length=1, Value=[0x02]
+Byte 24-26:  04 01 00          Tag 0x04, Length=1, Value=[0x00]
+Byte 27-29:  05 01 01          Tag 0x05, Length=1, Value=[0x01]
+Byte 30-32:  06 01 01          Tag 0x06 (Display LED), Length=1, Value=[0x01]
+Byte 33-35:  07 01 00          Tag 0x07 (Display Setting), Length=1, Value=[0x00]
+Byte 36-38:  08 01 00          Tag 0x08 (Air Filter), Length=1, Value=[0x00]
+Byte 39-41:  09 01 01          Tag 0x09 (Air Quality), Length=1, Value=[0x01]
+Byte 42-44:  0A 01 64          Tag 0x0A (AQ Score), Length=1, Value=[0x64]
+Byte 45-48:  0B 02 01 00       Tag 0x0B (PM2.5), Length=2, Value=[0x01, 0x00]
+Byte 49-51:  0E 01 00          Tag 0x0E (Display Lock), Length=1, Value=[0x00]
+Byte 52-54:  0F 01 02          Tag 0x0F (Auto Mode), Length=1, Value=[0x02]
+Byte 55-58:  10 02 8A 00       Tag 0x10, Length=2, Value=[0x8A, 0x00]
+Byte 59-62:  11 02 00 00       Tag 0x11 (Efficient), Length=2, Value=[0x00, 0x00]
+Byte 63-65:  12 01 01          Tag 0x12 (Power), Length=1, Value=[0x01]
+Byte 66-68:  13 01 01          Tag 0x13 (Light Detect), Length=1, Value=[0x01]
+Byte 69-71:  16 01 00          Tag 0x16, Length=1, Value=[0x00]
+Byte 72-74:  17 01 01          Tag 0x17, Length=1, Value=[0x01]
+Byte 75-77:  18 01 00          Tag 0x18 (Sleep Mode), Length=1, Value=[0x00]
+Byte 78-80:  19 01 01          Tag 0x19, Length=1, Value=[0x01]
+Byte 81-84:  1A 02 05 00       Tag 0x1A (Fan Level), Length=2, Value=[0x05, 0x00]
+Byte 85-87:  1B 01 03          Tag 0x1B, Length=1, Value=[0x03]
+Byte 88-90:  1C 01 01          Tag 0x1C, Length=1, Value=[0x01]
+Byte 91-94:  1D 02 2D 00       Tag 0x1D, Length=2, Value=[0x2D, 0x00]
+Byte 95-97:  1E 01 01          Tag 0x1E, Length=1, Value=[0x01]
+Byte 98-101: 20 02 E0 01       Tag 0x20, Length=2, Value=[0xE0, 0x01]
+Byte 102-104: 1F 01 05         Tag 0x1F, Length=1, Value=[0x05]
+Byte 105-107: 21 01 01         Tag 0x21, Length=1, Value=[0x01]
+Byte 108-110: 22 01 02         Tag 0x22, Length=1, Value=[0x02]
+Byte 111-113: 23 01 01         Tag 0x23, Length=1, Value=[0x01]
+```
+
+Tags range from 0x00 to 0x23, with each tag having a length byte followed by 0-N value bytes.
 
 **Complete Status Data Field Map:**
 
-The status data (bytes 10-113) uses a tag-length-value encoding. Below are all documented fields:
+The TLV payload starts at byte 10. Each entry consists of [Tag][Length][Value bytes...]. Table is sorted by tag number.
 
-| Byte Position | Field Name | Values |
-|--------------|------------|--------|
-| **20** | **Device Power** | 0=OFF, 1=ON |
-| **23** | **Fan Mode** | 0=Manual, 1=Sleep, 2=Automatic, 3=Pet |
-| **26** | **Fan Level** | 0=min, 1-4=levels, 5=auto, 255=null |
-| **32** | **Display State (LED)** | 0=OFF, 1=ON (actual LED state) |
-| **35** | **Display Setting** | 0=OFF, 1=ON (user setting) |
-| **38** | **Air Filter State** | 0=OK, 1=Replace |
-| **41** | **Air Quality Level** | 1=Very Good, 2=Good, 3=Moderate, 4=Bad |
-| **44** | **Air Quality Score** | 0-255 (proprietary score) |
-| **47** | **Particle Density (PM2.5)** | µg/m³ value (16-bit, little-endian) |
-| **51** | **Display Lock** | 0=Unlocked, 1=Locked |
-| **54** | **Auto Mode Setting** | 0=Default, 1=Quiet, 2=Efficient |
-| **57-58** | **Efficient Value** | 100-1800 (16-bit, little-endian) |
-| **68** | **Light Detection** | 0=OFF, 1=ON |
-| **77** | **Sleep Mode** | 0=OFF, 1=ON |
-| **83** | **Quick Clean Minutes** | Time in minutes |
-| **87** | **Quick Clean Fan Level** | 1-4 |
-| **93** | **White Noise Minutes** | Time in minutes |
-| **97** | **White Noise Fan Level** | 1-4 |
-| **100-101** | **Sleep Mode Minutes** | Time in minutes (16-bit) |
-| **104** | **Sleep Mode Fan Level** | 1-4 |
-| **107** | **Day Time Auto Off** | 0=OFF, 1=ON |
-| **110** | **Day Time Fan Mode** | Fan mode during day |
-| **112** | **Day Time Fan Level** | Fan level during day |
+| TLV Tag | Tag Pos | Len | Value Pos | Field Name | Values |
+|---------|---------|-----|-----------|------------|--------|
+| 0x00 | 10 | 1 | 12 | Unknown 00 | Unknown purpose |
+| 0x01 | 13 | 3 | 15-17 | Unknown 01 | Unknown purpose |
+| 0x02 | 18 | 1 | 20 | Unknown 02 | Unknown purpose |
+| 0x03 | 21 | 1 | 23 | **Fan Mode** | 0=Manual, 1=Sleep, 2=Auto, 3=Pet |
+| 0x04 | 24 | 1 | 26 | Unknown 04 | Unknown purpose |
+| 0x05 | 27 | 1 | 29 | Unknown 05 | Unknown purpose |
+| 0x06 | 30 | 1 | 32 | **Display State (LED)** | 0=OFF, 1=ON (actual LED state) |
+| 0x07 | 33 | 1 | 35 | **Display Setting** | 0=OFF, 1=ON (user setting) |
+| 0x08 | 36 | 1 | 38 | **Air Filter State** | 0=OK, 1=Replace |
+| 0x09 | 39 | 1 | 41 | **Air Quality Level** | 1=Very Good, 2=Good, 3=Moderate, 4=Bad |
+| 0x0A | 42 | 1 | 44 | **Air Quality Score** | 0-255 (proprietary score) |
+| 0x0B | 45 | 2 | 47-48 | **Particle Density (PM2.5)** | µg/m³ value (16-bit LE) |
+| 0x0E | 49 | 1 | 51 | **Display Lock** | 0=Unlocked, 1=Locked |
+| 0x0F | 52 | 1 | 54 | **Auto Mode Setting** | 0=Default, 1=Quiet, 2=Efficient |
+| 0x10 | 55 | 2 | 57-58 | Unknown 10 | Unknown purpose (16-bit LE) |
+| 0x11 | 59 | 2 | 61-62 | **Efficient Value** | 100-1800 (16-bit LE, scaled by 1.3) |
+| 0x12 | 63 | 1 | 65 | **Device Power** | 0=OFF, 1=ON |
+| 0x13 | 66 | 1 | 68 | **Light Detection** | 0=OFF, 1=ON |
+| 0x16 | 69 | 1 | 71 | Unknown 16 | Unknown purpose |
+| 0x17 | 72 | 1 | 74 | Unknown 17 | Unknown purpose |
+| 0x18 | 75 | 1 | 77 | **Sleep Mode** | 0=OFF, 1=ON |
+| 0x19 | 78 | 1 | 80 | Unknown 19 | Unknown purpose |
+| 0x1A | 81 | 2 | 83-84 | **Fan Level** | 0=min, 1-4=levels, 5=auto (16-bit LE) |
+| 0x1B | 85 | 1 | 87 | **Quick Clean Fan Level** | 1-4 |
+| 0x1C | 88 | 1 | 90 | **White Noise Fan Level** | 1-4 |
+| 0x1D | 91 | 2 | 93-94 | **White Noise Minutes** | Time in minutes (16-bit LE) |
+| 0x1E | 95 | 1 | 97 | Unknown 1E | Unknown purpose |
+| 0x1F | 102 | 1 | 104 | **Sleep Mode Fan Level** | 1-4 |
+| 0x20 | 98 | 2 | 100-101 | **Sleep Mode Minutes** | Time in minutes (16-bit LE) |
+| 0x21 | 105 | 1 | 107 | **Day Time Auto Off** | 0=OFF, 1=ON |
+| 0x22 | 108 | 1 | 110 | **Day Time Fan Mode** | Fan mode during day |
+| 0x23 | 111 | 1 | 113 | **Day Time Fan Level** | Fan level during day |
+
+*Note: Byte positions are fixed for each tag in the TLV structure. "LE" indicates little-endian byte order for multi-byte values.*
 
 **Example Status Message (with key fields highlighted):**
 
@@ -108,16 +164,22 @@ The status data (bytes 10-113) uses a tag-length-value encoding. Below are all d
 Full message (114 bytes):
 A5 22 19 6C 00 DE 02 00 55 00 00 01 02 01 03 02 00 02 02 01 01 03 01 02 04 01 00 05 01 01 06 01 01 07 01 00 08 01 00 09 01 01 0A 01 64 0B 02 01 00 0E 01 00 0F 01 02 10 02 8A 00 11 02 00 00 12 01 01 13 01 01 16 01 00 17 01 01 18 01 00 19 01 01 1A 02 05 00 1B 01 03 1C 01 01 1D 02 2D 00 1E 01 01 20 02 E0 01 1F 01 05 21 01 01 22 01 02 23 01 01
 
+Bytes 0-9: Header (A5 22 19 6C 00 DE 02 00 55 00)
+Bytes 10+: TLV payload
+
 Decoded values from this message:
-- Device Power (byte 20): 0x01 = ON
-- Fan Mode (byte 23): 0x02 = Automatic
-- Fan Level (byte 26): 0x05 = Auto Mode
-- Display LED (byte 32): 0x00 = OFF (light detect dimmed it)
-- Display Setting (byte 35): 0x01 = ON (user wants it on)
-- Air Quality Level (byte 41): 0x03 = Moderate
-- PM2.5 (bytes 47-48): 0x8A 0x00 = 138 µg/m³
-- Auto Mode (byte 54): 0x01 = Quiet
-- Light Detection (byte 68): 0x02 = ON
+- Device Power (tag 0x12, byte 65): 0x01 = ON
+- Fan Mode (tag 0x03, byte 23): 0x02 = Auto
+- Fan Level (tag 0x1A, bytes 83-84): 0x05 0x00 = Auto Mode (5)
+- PM2.5 (tag 0x0B, bytes 47-48): 0x01 0x00 = 1 µg/m³
+- Display LED (tag 0x06, byte 32): 0x01 = ON
+- Display Setting (tag 0x07, byte 35): 0x00 = OFF
+- Air Filter (tag 0x08, byte 38): 0x00 = OK
+- Air Quality Level (tag 0x09, byte 41): 0x01 = Very Good
+- Air Quality Score (tag 0x0A, byte 44): 0x64 = 100
+- Display Lock (tag 0x0E, byte 51): 0x00 = Unlocked
+- Auto Mode (tag 0x0F, byte 54): 0x02 = Efficient
+- Light Detection (tag 0x13, byte 68): 0x01 = ON
 ```
 
 ## Command Reference
@@ -227,29 +289,20 @@ Decoded values from this message:
 
 ## Status Field Mapping
 
-### Device Power (Byte 20)
+### Device Power (Tag 0x12, Byte 65)
 | Value | State |
 |-------|-------|
 | 0x00 | OFF |
 | 0x01 | ON |
 
-**Example:** `... 12 01 ►01◄ 13 01 ...` = Device is ON
+**Example:** `... 12 01 ►01◄ 13 01 ...` = Device is ON (Tag 0x12, Length 1, Value 0x01)
 
-### Fan Modes (Byte 23)
+### Fan Levels (Tag 0x1A, Bytes 83-84)
 
-| Value | Mode |
-|-------|------|
-| 0 | Manual |
-| 1 | Sleep |
-| 2 | Automatic |
-| 3 | Pet Mode |
-
-**Example:** `... 21 01 ►02◄ 22 01 ...` = Automatic mode
-
-### Fan Levels (Byte 26)
+16-bit value in little-endian format.
 
 | Value | Meaning |
-|-------|---------|
+|-------|---------|  
 | 0x00 | Minimum fan speed / OFF |
 | 0x01 | Fan level 1 |
 | 0x02 | Fan level 2 |
@@ -258,9 +311,9 @@ Decoded values from this message:
 | 0x05 | Auto mode (fan adjusts automatically) |
 | 0xFF | Null/Unknown |
 
-**Example:** `... 1A 02 ►05◄ 00 1B ...` = Auto mode (0x05)
+**Example:** `... 1A 02 ►05 00◄ 1B ...` = Auto mode (Tag 0x1A, Length 2, Value 0x0005)
 
-### Air Quality Levels (Byte 41)
+### Air Quality Levels (Tag 0x09, Byte 41)
 
 | Value | Quality | LED Color | Description |
 |-------|---------|-----------|-------------|
@@ -269,17 +322,17 @@ Decoded values from this message:
 | 3 | Moderate | Orange | Air quality moderate |
 | 4 | Bad | Red | Air quality poor |
 
-**Example:** `... 1A 02 05 00 1B 01 ►03◄ 1C ...` = Moderate (Orange LED)
+**Example:** `... 09 01 ►01◄ 0A ...` = Very Good (Tag 0x09, Length 1, Value 0x01)
 
 ### Display States
 
-**Display LED State (Byte 32):**
+**Display LED State (Tag 0x06, Byte 32):**
 | Value | State |
 |-------|-------|
 | 0x00 | LED is OFF / Dimmed |
 | 0x01 | LED is ON / Illuminated |
 
-**Display Setting (Byte 35):**
+**Display Setting (Tag 0x07, Byte 35):**
 | Value | Setting |
 |-------|---------|
 | 0x00 | User set to OFF |
@@ -287,9 +340,9 @@ Decoded values from this message:
 
 *Note: When light detection is enabled and room is dark, Display LED (byte 32) will be 0x00 even though Display Setting (byte 35) is 0x01*
 
-**Example:** Bytes 32=0x00, 35=0x01 means user wants display ON but light detection dimmed it due to darkness
+**Example:** `... 06 01 ►00◄ 07 01 ►01◄ ...` means user wants display ON but light detection dimmed it
 
-### Auto Mode Settings (Byte 54)
+### Auto Mode Settings (Tag 0x0F, Byte 54)
 
 | Value | Setting |
 |-------|---------|
@@ -297,28 +350,28 @@ Decoded values from this message:
 | 1 | Quiet |
 | 2 | Efficient |
 
-**Example:** `... 1D 02 2D 00 1E 01 ►01◄ 20 ...` = Quiet mode
+**Example:** `... 0F 01 ►02◄ 10 ...` = Efficient mode (Tag 0x0F, Length 1, Value 0x02)
 
-### Particle Density / PM2.5 (Bytes 47-48)
+### Particle Density / PM2.5 (Tag 0x0B, Bytes 47-48)
 
 16-bit value in little-endian format representing PM2.5 concentration in µg/m³
 
-**Example:** `... 10 02 ►8A 00◄ 11 02 ...` = 0x008A = 138 µg/m³
+**Example:** `... 0B 02 ►01 00◄ 0E ...` = 0x0001 = 1 µg/m³ (Tag 0x0B, Length 2, Value 0x01 0x00)
 
-### Display Lock (Byte 51)
+### Display Lock (Tag 0x0E, Byte 51)
 | Value | State |
 |-------|-------|
 | 0x00 | Unlocked |
 | 0x01 | Locked |
 
-### Light Detection (Byte 68)
+### Light Detection (Tag 0x13, Byte 68)
 | Value | State |
 |-------|-------|
 | 0x00 | OFF (manual brightness) |
 | 0x01 | ON (auto brightness) |
 | 0x02 | ON (alternate encoding) |
 
-### Air Filter State (Byte 38)
+### Air Filter State (Tag 0x08, Byte 38)
 | Value | State |
 |-------|-------|
 | 0x00 | Filter OK |
