@@ -407,7 +407,8 @@ namespace esphome
                         this->airquality_level->publish_state(level);
                     }
 
-                    if (this->particle_density && checkValChanged(settings.particleDensity, "particleDensity", msg[47]))
+                    std::uint16_t particleDensityTempValue = parse16BitIntegerValue(msg[47], msg[48]);
+                    if (this->particle_density && checkValChanged16(settings.particleDensity, "particleDensity", particleDensityTempValue))
                     {
                         this->particle_density->publish_state(settings.particleDensity);
                         if (this->air_quality_index)
