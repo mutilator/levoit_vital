@@ -145,6 +145,12 @@ sensor:
       state_class: measurement
       unit_of_measurement: "AQI"
 
+binary_sensor:
+  - platform: levoitvital
+    light_detected:
+      name: "Light detected"
+      device_class: "light"
+
 text_sensor:
   - platform: levoitvital
     airquality_level:

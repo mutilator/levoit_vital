@@ -15,6 +15,7 @@ As there was no component or firmware or anything for the Levoit Vital 200S i re
   - **Automatic**: AI-driven fan speed based on air quality
   - **Pet**: Optimized for pet environments
 - **Sensors**: PM2.5 particle density, air quality score/index, filter status
+  - **Light detected**: Binary sensor that reports ambient light detection (only works when the "Light detection" switch is enabled)
 - **Controls**: Device power, display settings, light detection
 - **Automation Modes**: Auto mode with Default/Quiet/Efficient presets
 

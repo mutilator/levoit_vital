@@ -142,7 +142,7 @@ The TLV payload starts at byte 10. Each entry consists of [Tag][Length][Value by
 | 0x12 | 63 | 1 | 65 | **Device Power** | 0=OFF, 1=ON |
 | 0x13 | 66 | 1 | 68 | **Light Detection** | 0=OFF, 1=ON |
 | 0x16 | 69 | 1 | 71 | Unknown 16 | Unknown purpose |
-| 0x17 | 72 | 1 | 74 | Unknown 17 | Unknown purpose |
+| 0x17 | 72 | 1 | 74 | **Light Detected** | 0=Light detected, 1=No light |
 | 0x18 | 75 | 1 | 77 | **Sleep Mode** | 0=OFF, 1=ON |
 | 0x19 | 78 | 1 | 80 | Unknown 19 | Unknown purpose |
 | 0x1A | 81 | 2 | 83-84 | **Fan Level** | 0=min, 1-4=levels, 5=auto (16-bit LE) |
@@ -376,6 +376,14 @@ Decoded values from this message:
 |-------|-------|
 | 0x00 | Filter OK |
 | 0x01 | Replace Filter |
+
+### Light Detected (Tag 0x17, Byte 74)
+| Value | State |
+|-------|-------|
+| 0x00 | Light detected (room is bright) |
+| 0x01 | No light detected (room is dark) |
+
+**Example:** `... 17 01 ►00◄ 18 ...` = Light detected (Tag 0x17, Length 1, Value 0x00)
 
 ## Checksum Calculation
 

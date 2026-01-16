@@ -25,6 +25,11 @@ namespace esphome
             AIR_QUALITY_INDEX
         };
 
+        enum LevoitBinarySensorPurpose : uint8_t
+        {
+            LIGHT_DETECTED
+        };
+
         enum LevoitTextSensorPurpose : uint8_t
         {
             AIRQUALITY_LEVEL,

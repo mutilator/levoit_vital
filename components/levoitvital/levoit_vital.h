@@ -11,13 +11,14 @@ namespace esphome
 {
     namespace levoit_vital
     {
-        class LevoitSwitch;     // forward declaration to prevent errors when including switch
-        class LevoitSelect;     // forward declaration to prevent errors when including select
-        class LevoitSensor;     // forward declaration to prevent errors when including sensor
-        class LevoitTextSensor; // forward declaration to prevent errors when including textsensor
-        class LevoitNumber;     // forward declaration to prevent errors when including number
+        class LevoitSwitch;       // forward declaration to prevent errors when including switch
+        class LevoitSelect;       // forward declaration to prevent errors when including select
+        class LevoitSensor;       // forward declaration to prevent errors when including sensor
+        class LevoitBinarySensor; // forward declaration to prevent errors when including binary_sensor
+        class LevoitTextSensor;   // forward declaration to prevent errors when including textsensor
+        class LevoitNumber;       // forward declaration to prevent errors when including number
         class LevoitButton;
-        class LevoitFan;        // forward declaration to prevent errors when including fan  
+        class LevoitFan;          // forward declaration to prevent errors when including fan  
 
         enum ModelType
         {
@@ -40,6 +41,7 @@ namespace esphome
             void set_switch(LevoitSwitch *sw, LevoitSwitchPurpose purpose);
             void set_select(LevoitSelect *select, LevoitSelectPurpose purpose);
             void set_sensor(LevoitSensor *sensor, LevoitSensorPurpose purpose);
+            void set_binary_sensor(LevoitBinarySensor *sensor, LevoitBinarySensorPurpose purpose);
             void set_text_sensor(LevoitTextSensor *sensor, LevoitTextSensorPurpose purpose);
             void set_number(LevoitNumber *number, LevoitNumberPurpose purpose);
             void set_button(LevoitButton *button, LevoitButtonPurpose purpose);
@@ -62,6 +64,9 @@ namespace esphome
             LevoitSensor *particle_density;
             LevoitSensor *airquality_score;
             LevoitSensor *air_quality_index;
+
+            // binary sensors
+            LevoitBinarySensor *light_detected;
 
             // textsensors
             LevoitTextSensor *airquality_level;

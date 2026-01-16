@@ -29,6 +29,7 @@ public:
     std::uint16_t airQualityIndex;   // 0-500 AQI
     std::uint8_t displayLock;        // 0=off, 1=on
     std::uint8_t lightDetection;     // 0=off, 1=on
+    std::uint8_t lightDetected;      // 0=light detected, 1=no light
     std::uint8_t sleepMode;          // 0=default, 1=custom
     std::uint8_t airfilter_state;    // 0 = clean, 1 = must be replaced
     std::uint16_t powerModeValue;    // time in minutes for the poewer mode (this is a cusom functionality from me, and not part of levoit)

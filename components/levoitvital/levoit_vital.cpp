@@ -7,6 +7,7 @@
 #include "switch/levoit_vital_switch.h"
 #include "select/levoit_vital_select.h"
 #include "sensor/levoit_vital_sensor.h"
+#include "binary_sensor/levoit_vital_binary_sensor.h"
 #include "number/levoit_vital_number.h"
 #include "button/levoit_vital_button.h"
 #include "text_sensor/levoit_vital_text_sensor.h"
@@ -94,6 +95,18 @@ namespace esphome
             case AIR_QUALITY_INDEX:
             {
                 this->air_quality_index = sensor;
+                break;
+            }
+            }
+        }
+
+        void LevoitVital::set_binary_sensor(LevoitBinarySensor *sensor, LevoitBinarySensorPurpose purpose)
+        {
+            switch (purpose)
+            {
+            case LIGHT_DETECTED:
+            {
+                this->light_detected = sensor;
                 break;
             }
             }
@@ -300,6 +313,12 @@ namespace esphome
                     if (this->light_detect_switch && checkValChanged(settings.lightDetection, "lightDetection", msg[68]))
                     {
                         this->light_detect_switch->publish_state(settings.lightDetection);
+                    }
+
+                    if (this->light_detected && checkValChanged(settings.lightDetected, "lightDetected", msg[74]))
+                    {
+                        // 0=light detected, 1=no light, so invert for boolean sensor
+                        this->light_detected->publish_state(settings.lightDetected == 0 ? 1 : 0);
                     }
 
                     // Update fan preset mode based on device status
