@@ -15,8 +15,7 @@ namespace esphome
 
         enum LevoitSelectPurpose : uint8_t
         {
-            AUTOMODE,
-            FANMODE
+            AUTOMODE
         };
 
         enum LevoitSensorPurpose : uint8_t

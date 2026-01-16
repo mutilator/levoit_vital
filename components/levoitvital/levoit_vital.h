@@ -54,7 +54,6 @@ namespace esphome
 
             // select controls
             LevoitSelect *select_automode;
-            LevoitSelect *select_fanmode;
 
             // fan
             LevoitFan *fan_level;

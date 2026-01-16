@@ -69,11 +69,6 @@ namespace esphome
                 this->select_automode = select;
                 break;
             }
-            case FANMODE:
-            {
-                this->select_fanmode = select;
-                break;
-            }
             }
         }
 
@@ -307,28 +302,33 @@ namespace esphome
                         this->light_detect_switch->publish_state(settings.lightDetection);
                     }
 
-                    if (this->select_fanmode && checkValChanged(settings.fanMode, "fanMode", msg[23]))
+                    // Update fan preset mode based on device status
+                    if (this->fan_level && checkValChanged(settings.fanMode, "fanMode", msg[23]))
                     {
                         switch (settings.fanMode)
                         {
                         case 0:
                         {
-                            this->select_fanmode->publish_state("Manual");
+                            this->fan_level->update_preset_mode("Manual");
+                            this->fan_level->publish_state();
                             break;
                         }
                         case 1:
                         {
-                            this->select_fanmode->publish_state("Sleep");
+                            this->fan_level->update_preset_mode("Sleep");
+                            this->fan_level->publish_state();
                             break;
                         }
                         case 2:
                         {
-                            this->select_fanmode->publish_state("Automatic");
+                            this->fan_level->update_preset_mode("Automatic");
+                            this->fan_level->publish_state();
                             break;
                         }
                         case 3:
                         {
-                            this->select_fanmode->publish_state("Pet");
+                            this->fan_level->update_preset_mode("Pet");
+                            this->fan_level->publish_state();
                             break;
                         }
                         }

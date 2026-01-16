@@ -20,6 +20,7 @@ namespace esphome
     {
         ESP_LOGCONFIG(TAG, "Levoit Vital Fan");
         ESP_LOGCONFIG(TAG, "  Speed levels: 4 (0=OFF, 1-4)");
+        ESP_LOGCONFIG(TAG, "  Preset modes: Manual, Sleep, Automatic, Pet");
     }
 
     fan::FanTraits LevoitFan::get_traits()
@@ -27,6 +28,7 @@ namespace esphome
         auto traits = fan::FanTraits();
         traits.set_speed(true);
         traits.set_supported_speed_count(4); // 4 speed levels (1, 2, 3, 4)
+        traits.set_supported_preset_modes({PRESET_MODE_MANUAL, PRESET_MODE_SLEEP, PRESET_MODE_AUTOMATIC, PRESET_MODE_PET});
         return traits;
     }
 
@@ -44,6 +46,35 @@ namespace esphome
             }
         }
 
+        if (call.has_preset_mode())
+        {
+            const char *preset = call.get_preset_mode();
+            this->state = true; // Presets always turn the fan on
+
+            ESP_LOGI(TAG, "Fan preset mode set to: %s", preset);
+
+            if (strcmp(preset, PRESET_MODE_MANUAL) == 0)
+            {
+                parent_->sendCommand(setFanModeManual);
+            }
+            else if (strcmp(preset, PRESET_MODE_SLEEP) == 0)
+            {
+                parent_->sendCommand(setFanModeSleep);
+            }
+            else if (strcmp(preset, PRESET_MODE_AUTOMATIC) == 0)
+            {
+                parent_->sendCommand(setFanModeAuto);
+            }
+            else if (strcmp(preset, PRESET_MODE_PET) == 0)
+            {
+                parent_->sendCommand(setFanModePet);
+            }
+            else
+            {
+                ESP_LOGW(TAG, "Unknown preset mode: %s", preset);
+            }
+        }
+
         if (call.get_speed().has_value())
         {
             int speed_level = *call.get_speed();
@@ -51,6 +82,12 @@ namespace esphome
             this->state = (speed_level > 0); // Auto turn on if speed > 0
 
             ESP_LOGI(TAG, "Fan speed set to: %d", speed_level);
+
+            // When speed is manually set, switch to Manual mode
+            if (speed_level > 0 && !this->has_preset_mode())
+            {
+                parent_->sendCommand(setFanModeManual);
+            }
 
             switch (speed_level)
             {

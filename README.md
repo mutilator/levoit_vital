@@ -7,6 +7,17 @@ As there was no component or firmware or anything for the Levoit Vital 200S i re
 - If you want to go deeper, i provided my current reverse engineering data ([command table.xlsx](https://github.com/user-attachments/files/23830099/command.table.xlsx)).
 - **Protocol Documentation**: See [PROTOCOL.md](PROTOCOL.md) for complete UART protocol specification, including message structure, command reference, status field mappings, and checksum calculation.
 
+## Features
+
+- **Fan Component** with speed levels (1-4) and preset modes:
+  - **Manual**: Direct fan speed control
+  - **Sleep**: Quiet operation mode
+  - **Automatic**: AI-driven fan speed based on air quality
+  - **Pet**: Optimized for pet environments
+- **Sensors**: PM2.5 particle density, air quality score/index, filter status
+- **Controls**: Device power, display settings, light detection
+- **Automation Modes**: Auto mode with Default/Quiet/Efficient presets
+
 
 # How to?
 

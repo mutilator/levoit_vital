@@ -183,6 +183,7 @@ fan:
   - platform: levoitvital
     id: levoit_fan
     name: "Fan"
+    # Preset modes: Manual, Sleep, Automatic, Pet
 
 select:
   - platform: levoitvital
@@ -193,12 +194,3 @@ select:
         - "Default"
         - "Quiet"
         - "Efficient"
-  - platform: levoitvital
-    fanmode:
-      name: "FanMode"
-      optimistic: true
-      options:
-        - "Manual"
-        - "Sleep"
-        - "Automatic"
-        - "Pet"

@@ -33,26 +33,6 @@ namespace esphome
         }
         break;
       }
-      case FANMODE:
-      {
-        if (value == "Manual")
-        {
-          parent_->sendCommand(setFanModeManual);
-        }
-        if (value == "Sleep")
-        {
-          parent_->sendCommand(setFanModeSleep);
-        }
-        else if (value == "Automatic")
-        {
-          parent_->sendCommand(setFanModeAuto);
-        }
-        else if (value == "Pet")
-        {
-          parent_->sendCommand(setFanModePet);
-        }
-        break;
-      }
       }
       ESP_LOGI(TAG, "Selected option: %s", value.c_str());
     }
