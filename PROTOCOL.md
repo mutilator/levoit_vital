@@ -124,7 +124,7 @@ The TLV payload starts at byte 10. Each entry consists of [Tag][Length][Value by
 | TLV Tag | Tag Pos | Len | Value Pos | Field Name | Values |
 |---------|---------|-----|-----------|------------|--------|
 | 0x00 | 10 | 1 | 12 | Unknown 00 | Unknown purpose |
-| 0x01 | 13 | 3 | 15-17 | Unknown 01 | Unknown purpose |
+| 0x01 | 13 | 3 | 15-17 | **Model** | 100s = (0x00 0x00 0x02), 200s = (0x02 0x00 0x02) |
 | 0x02 | 18 | 1 | 20 | **Power State** | 0=OFF, 1=ON |
 | 0x03 | 21 | 1 | 23 | **Fan Mode** | 0=Manual, 1=Sleep, 2=Auto, 3=Pet |
 | 0x04 | 24 | 1 | 26 | **Fan Speed** | 0x01=Very Low (Sleep), 0x02=Low, 0x03=Medium, 0x04=High, 0xFF=OFF |
@@ -137,7 +137,7 @@ The TLV payload starts at byte 10. Each entry consists of [Tag][Length][Value by
 | 0x0B | 45 | 2 | 47-48 | **Particle Density (PM2.5)** | µg/m³ value (16-bit LE) |
 | 0x0E | 49 | 1 | 51 | **Display Lock** | 0=Unlocked, 1=Locked |
 | 0x0F | 52 | 1 | 54 | **Auto Mode Setting** | 0=Default, 1=Quiet, 2=Efficient |
-| 0x10 | 55 | 2 | 57-58 | Unknown 10 | Unknown purpose (16-bit LE) |
+| 0x10 | 55 | 2 | 57-58 | Unknown 10 | 100s = (0x00 0x00), 200s = (0x8A 0x00) |
 | 0x11 | 59 | 2 | 61-62 | **Efficient Value** | 100-1800 (16-bit LE, scaled by 1.3) |
 | 0x12 | 63 | 1 | 65 | **Device Power** | 0=OFF, 1=ON |
 | 0x13 | 66 | 1 | 68 | **Light Detection** | 0=OFF, 1=ON |
